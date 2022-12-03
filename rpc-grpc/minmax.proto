@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package minmax;
+option go_package = "./";
+
+service MinMax {
+    rpc Find (FindRequest) returns (FindResponse) {}
+}
+
+message FindRequest {
+    repeated float numbers = 1;
+}
+
+message FindResponse {
+    float min = 1;
+    float max = 2;
+}
