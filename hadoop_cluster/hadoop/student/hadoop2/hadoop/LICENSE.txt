@@ -1,0 +1,1 @@
+../../../hadoop-bin/LICENSE.txt
