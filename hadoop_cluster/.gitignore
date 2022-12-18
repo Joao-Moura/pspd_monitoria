@@ -1,0 +1,3 @@
+hadoop-bin/
+hadoop/student/**/data/*
+hadoop/student/**/etc/*
