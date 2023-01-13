@@ -1,0 +1,15 @@
+<configuration>
+    <property><name>dfs.namenode.name.dir</name><value></value></property>
+
+    <property><name>dfs.datanode.data.dir</name><value></value></property>
+
+    <property><name>dfs.namenode.http-address</name><value></value></property>
+    <property><name>dfs.datanode.address</name><value></value></property>
+    <property><name>dfs.datanode.http.address</name><value></value></property>
+    <property><name>dfs.datanode.ipc.address</name><value></value></property>
+
+    <property>
+            <name>dfs.replication</name>
+            <value>1</value>
+    </property>
+</configuration>

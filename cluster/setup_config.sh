@@ -1,17 +1,19 @@
 #!/bin/bash
 
-HADOOP_BIN_DIR=/mnt/pspd-labs/share/hadoop
+BASEDIR=.   #/mnt/pspd-lds/share
+NODES=($(cat $BASEDIR/nodes))
 
-# nodes=("cm1" "cm2" "cm3" "cm4" "gpu1" "gpu2" "gpu3")
-nodes=("lds1" "lds2" "lds3")
+HADOOP_BIN_DIR=$BASEDIR/hadoop
+SPARK_BIN_DIR=$BASEDIR/spark
 
 JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
+HOME=./student          # remove this later
 bashrc=$HOME/.bashrc
 
 
 function setup_node_hadoop() {
-    for node in ${nodes[@]}; do
+    for node in ${NODES[@]}; do
         hadoop_node=$HOME/$node/hadoop
 
         mkdir -p $hadoop_node
@@ -20,7 +22,21 @@ function setup_node_hadoop() {
         rm -r $HADOOP_BIN_DIR/etc
         cp -r $HADOOP_BIN_DIR/etc $hadoop_node
 
-        echo "export JAVA_HOME=$JAVA_HOME" >> $hadoop_node/etc/hadoop-env.sh
+        echo "export JAVA_HOME=\$(echo \$JAVA_HOME)" >> $hadoop_node/etc/hadoop/hadoop-env.sh
+        echo "export HADOOP_HOME=\$(echo \$HADOOP_HOME)" >> $hadoop_node/etc/hadoop/hadoop-env.sh
+    done;
+}
+
+function setup_node_spark() {
+    for node in ${NODES[@]}; do
+        spark_node=$HOME/$node/spark
+    
+        mkdir -p $spark_node
+
+        ln -s -r $SPARK_BIN_DIR/* $spark_node
+        rm -r $spark_node/conf
+        mkdir $spark_node/conf
+        cp $SPARK_BIN_DIR/conf/* $spark_node/conf/
     done;
 }
 
@@ -38,7 +54,8 @@ function update_bashrc() {
     echo "export HADOOP_HDFS_HOME=\$HADOOP_HOME" >> $bashrc
     echo "export YARN_HOME=\$HADOOP_HOME" >> $bashrc
     echo "export HADOOP_COMMON_LIB_NATIVE_DIR=\$HADOOP_HOME/lib/native" >> $bashrc
-    echo "export PATH=\$PATH:\$HADOOP_HOME/sbin:\$HADOOP_HOME/bin:\$JAVA_HOME" >> $bashrc
+    echo "export SPARK_HOME=\$SPARK_HOME" >> $bashrc
+    echo "export PATH=\$PATH:\$HADOOP_HOME/sbin:\$HADOOP_HOME/bin:\$JAVA_HOME:\$SPARK_HOME" >> $bashrc
     echo "cd \$HOME" >> $bashrc
 }
 
@@ -51,6 +68,7 @@ function add_close_hadoop_in_ssh_logout() {
 }
 
 setup_node_hadoop
+setup_node_spark
 update_bashrc
 add_close_hadoop_in_ssh_logout
 source .bashrc
