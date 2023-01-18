@@ -1,8 +1,8 @@
 #!/bin/bash
 
-HOME=./student  # remove this later
+HOME=/mnt/pspd-lds/alunos/$(whoami)
 
-BASEDIR=.   #   /mnt/pspd-lds/share
+BASEDIR=/mnt/pspd-lds/share
 HADOOP_DIR=$BASEDIR/hadoop
 SPARK_BIN_DIR=$BASEDIR/spark
 NODES=($(cat $BASEDIR/nodes))
@@ -18,7 +18,9 @@ NAMENODE_WEBUI_ADDRESS="dfs.namenode.http-address"
 DATANODE_ADDRESS="dfs.datanode.address"
 DATANODE_WEBUI_ADDRESS="dfs.datanode.http.address"
 DATANODE_IPC_ADDRESS="dfs.datanode.ipc.address"
+HADOOP_TMP_DIR="hadoop.tmp.dir"
 
+PORTS=()
 
 function print_div {
     printf -- "=%.0s" {1..80} && echo
@@ -58,6 +60,31 @@ function read_open_port {
     echo $number
 }
 
+function is_port_specified {
+    for port in ${PORTS[@]}; do
+        if [[ $port -eq $1 ]]; then
+            >&2 echo "A porta $1 já foi especificada. Escolha outra"
+            echo 1
+            return
+        fi
+    done
+    echo 0
+}
+
+function read_port {
+    start=$1
+    end=$2
+
+    while true; do
+        number=$(read_open_port $start $end)
+        if [[ $(is_port_specified $number) -eq 0 ]]; then
+            PORTS+=($number)
+            echo $number
+            return;
+        fi
+    done
+}
+
 function get_node_home {
     echo $HOME/$1
 }
@@ -79,9 +106,10 @@ function replace_config {
     property=$2
     value=$(echo $3 | sed 's/\//\\\//g')
     regex=$(printf $PROPERTY_PATTERN $property $value)
-
     sed -i -E $regex $file
 }
+
+cd $HOME
 
 print_div
 echo "Configuração das portas do Hadoop e Spark"
@@ -90,9 +118,15 @@ echo ${NODES[@]}
 print_div
 
 
+
 for node in ${NODES[@]}; do
    cp $HADOOP_DIR/etc/hadoop/core-site.xml $(get_node_core_site $node)
    cp $HADOOP_DIR/etc/hadoop/hdfs-site.xml $(get_node_hdfs_site $node)
+
+   hadoop_tmp_dir=$(get_node_home $node)/hadoop-tmp
+   rm -r $hadoop_tmp_dir 2> /dev/null
+   mkdir $hadoop_tmp_dir
+   replace_config $(get_node_core_site $node) $HADOOP_TMP_DIR $hadoop_tmp_dir
 done;
 
 echo -e "\n\n"
@@ -114,7 +148,7 @@ print_div
 port=$(read_open_port $PORT_START $PORT_END)
 
 for node in ${NODES[@]}; do
-    replace_config $(get_node_hdfs_site $node) $NAMENODE_WEBUI_ADDRESS 0.0.0.0:$port
+    replace_config $(get_node_hdfs_site $node) $NAMENODE_WEBUI_ADDRESS $node:$port
 done;
 
 echo -e "\n\n"
@@ -124,7 +158,7 @@ print_div
 port=$(read_open_port $PORT_START $PORT_END)
 
 for node in ${NODES[@]}; do
-    replace_config $(get_node_hdfs_site $node) $DATANODE_ADDRESS 0.0.0.0:$port
+    replace_config $(get_node_hdfs_site $node) $DATANODE_ADDRESS $node:$port
 done;
 
 echo -e "\n\n"
@@ -134,7 +168,7 @@ print_div
 port=$(read_open_port $PORT_START $PORT_END)
 
 for node in ${NODES[@]}; do
-    replace_config $(get_node_hdfs_site $node) $DATANODE_WEBUI_ADDRESS 0.0.0.0:$port
+    replace_config $(get_node_hdfs_site $node) $DATANODE_WEBUI_ADDRESS $node:$port
 done;
 
 echo -e "\n\n"
@@ -144,7 +178,7 @@ print_div
 port=$(read_open_port $PORT_START $PORT_END)
 
 for node in ${NODES[@]}; do
-    replace_config $(get_node_hdfs_site $node) $DATANODE_IPC_ADDRESS 0.0.0.0:$port
+    replace_config $(get_node_hdfs_site $node) $DATANODE_IPC_ADDRESS $node:$port
 done;
 
 echo -e "\n\n\n"
@@ -172,3 +206,5 @@ port=$(read_open_port $PORT_START $PORT_END)
 for node in ${NODES[@]}; do
     echo "SPARK_MASTER_WEBUI_PORT=$port" >> $(get_node_spark_env_conf $node)
 done;
+
+hadoop namenode -format
