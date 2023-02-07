@@ -1,0 +1,31 @@
+export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre
+
+export HADOOP_PROF_HOME=/home/prof/hadoop
+export HADOOP_BIN_HOME=$HADOOP_PROF_HOME/hadoop
+export SPARK_BIN_HOME=$HADOOP_PROF_HOME/spark/spark
+export KAFKA_BIN_HOME=$HADOOP_PROF_HOME/kafka/kafka
+export ELASTIC_BIN_HOME=$HADOOP_PROF_HOME/elasticsearch/elasticsearch
+export KIBANA_BIN_HOME=$HADOOP_PROF_HOME/elasticsearch/kibana
+
+export HADOOP_HOME=$HADOOP_PROF_HOME/hadoop-$(hostname)
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export HADOOP_COMMON_HOME=$HADOOP_BIN_HOME
+export HADOOP_LIBEXEC_DIR=$HADOOP_COMMON_HOME/libexec
+export HADOOP_HDFS_HOME=$HADOOP_COMMON_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_COMMON_HOME
+export HADOOP_YARN_HOME=$HADOOP_COMMON_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_COMMON_HOME/lib/native/
+export HADOOP_OPTS="$HADOOP_OPTS -Djava.library.path=$HADOOP_COMMON_HOME/lib/"
+
+export SPARK_HOME=$SPARK_BIN_HOME
+export SPARK_CONF_DIR=$HADOOP_PROF_HOME/spark/spark-$(hostname)/conf
+export SPARK_LOG_DIR=$HADOOP_PROF_HOME/spark/spark-$(hostname)/logs
+
+export KAFKA_HOME=$KAFKA_BIN_HOME
+
+export KIBANA_HOST=http://cm4:5601
+
+export PYTHONPATH=$PYTHONPATH:$HADOOP_PROF_HOME/python
+
+export PATH=$PATH:$HADOOP_COMMON_HOME/bin:$HADOOP_COMMON_HOME/sbin:$SPARK_HOME/bin:$SPARK_HOME/sbin:$HADOOP_PROF_HOME/python/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin:$KAFKA_HOME/bin
+
