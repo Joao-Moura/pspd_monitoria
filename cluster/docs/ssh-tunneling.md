@@ -1,6 +1,6 @@
 # SSH - Tunneling
 
-Atualmente a chococino só permite acesso externo na porta 1305, que é utilizado para o ssh. Então para acessar algum recurso, seja um servidor web
+Atualmente a chococino só permite acesso externo na porta 13508, que é utilizado para o ssh. Então para acessar algum recurso, seja um servidor web
 ou qualquer tipo de socket, rodando no cluster na sua máquina local, é necessário realizar um redirecionamento de porta via ssh.
 Esse redirecionamento de porta pode ser feito em dois sentidos, Local Forwarding (local -> remoto) e Remote Forwading (remoto -> local).
 
