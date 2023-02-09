@@ -4,16 +4,16 @@
 
 ### 1.1 Máquinas disponíveis
 
-|Máquina  |CPU         |Memória|GPU    |
-|---------|------------|-------|-------|
-|Chococino|Ryzen 7 2700|4GB    | ----- |
-|CM1      |i7-8700     |16GB   | ----- |
-|CM2      |i7-8700     |16GB   | ----- |
-|CM3      |i7-8700     |16GB   | ----- |
-|CM4      |i7-8700     |16GB   | ----- |
-|GPU1     |Ryzen 7 2700|4GB    |GTX1650|
-|GPU2     |Ryzen 7 2700|4GB    |GTX1650|
-|GPU3     |Ryzen 7 2700|4GB    |GTX1650|
+|Máquina  |CPU         |Memória |GPU    |
+|---------|------------|------- |-------|
+|Chococino|Ryzen 7 2700|16GB    | ----- |
+|CM1      |i7-8700     |16GB    | ----- |
+|CM2      |i7-8700     |16GB    | ----- |
+|CM3      |i7-8700     |16GB    | ----- |
+|CM4      |i7-8700     |16GB    | ----- |
+|GPU1     |Ryzen 7 2700|16GB    |GTX1650|
+|GPU2     |Ryzen 7 2700|16GB    |GTX1650|
+|GPU3     |Ryzen 7 2700|16GB    |GTX1650|
 
 
 ### 1.2 Serviços executando
