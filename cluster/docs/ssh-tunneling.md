@@ -1,12 +1,12 @@
 # SSH - Tunneling
 
 Atualmente a chococino só permite acesso externo na porta 13508, que é utilizado para o ssh. Então para acessar algum recurso, seja um servidor web
-ou qualquer tipo de socket, rodando no cluster na sua máquina local, é necessário realizar um redirecionamento de porta via ssh.
-Esse redirecionamento de porta pode ser feito em dois sentidos, Local Forwarding (local -> remoto) e Remote Forwading (remoto -> local).
+ou qualquer tipo de socket rodando no cluster na sua máquina local, é necessário realizar um redirecionamento de porta via ssh.
+Esse redirecionamento de porta pode ser feito por meio Local Forwarding (local -> remoto), Remote Forwading (remoto -> local) e Proxy Socks.
 
 ## 1. Local Forwarding
 
-O Local Forwading redireciona a porta local da sua máquina para uma porta na máquina remota (chococino). Assim, você consegue ter acesso local
+O Local Forwading redireciona a porta local da sua máquina para uma porta na máquina remota. Assim, você consegue ter acesso local
 (via localhost) a uma aplicação que está rodando dentro do cluster da chococino. Para isso, usa-se a flag `-L` do ssh. O formato do comando é o seguinte:
 ```bash
 # Na sua máquina local
@@ -57,7 +57,7 @@ cm1: $ curl chococino:5000
 ## 3. Proxy Socks
 
 O Proxy Socks cria um tunel que redireciona toda as conexões para dentro do tunel SSH.
-Essa opção evita ter facilita o acesso a aplicações rodando em diferentes máquinas sem a necessidade de especificar cada porta que irá utilizar.
+Essa opção facilita o acesso a aplicações rodando em diferentes máquinas, sem a necessidade de especificar cada porta que será acessada.
 Para isso utilize a flag `-D <porta_local_de_proxy>` no comando SSH.
 ```bash
 $ ssh -D <porta_local_de_proxy> -p13508 <user>@chococino.naquadah.com.br

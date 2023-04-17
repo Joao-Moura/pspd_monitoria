@@ -51,6 +51,8 @@ $ ssh cm3
 $ ssh gpu1
 ...
 $ ssh gpu3
+$ ssh pos1
+$ ssh pos2
 ```
 
 Para navegar sem precisar de senha entre as máquinas, é necessário criar uma chave e autorizar ela
@@ -62,15 +64,14 @@ $ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 ## 4. Acesso ao serviços
 
-Vários serviços estão funcionando no cluster chococino, como Apache Hadoop, Apache Spark, Apache Kafka, ElasticSearch e Kibana. Para interagir com
+Vários serviços estão funcionando no cluster chococino, como o Apache Hadoop, Apache Spark, Apache Kafka, ElasticSearch e Kibana. Para interagir com
 esse serviços é preciso entrar no ambiente. Para isso, execute o comando:
 ```bash
 # Dentro do cluster chococino
 $ source /home/prof/hadoop/bin/chococino_env
 ```
 
-Esse comando irá exportar as váriaveis que permitirão interação com os servicos, mas só durante a sessão do ssh. Para acesso definitivo, use o comando:
+Esse comando irá exportar as váriaveis que permitem a interação com os servicos, mas só durante a sessão do ssh. Para acesso definitivo, use o comando:
 ```bash
 $ echo "source /home/prof/hadoop/bin/chococino_env" >> $HOME/.bashrc
 ```
-
