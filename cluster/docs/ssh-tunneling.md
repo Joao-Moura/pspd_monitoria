@@ -53,3 +53,32 @@ $ ssh -R chococino:5000:localhost:8000 -p13508 <user>@chococino.naquadah.com.br
 # Dentro da chococino
 cm1: $ curl chococino:5000
 ```
+
+## 3. Proxy Socks
+
+O Proxy Socks cria um tunel que redireciona toda as conexões para dentro do tunel SSH.
+Essa opção evita ter facilita o acesso a aplicações rodando em diferentes máquinas sem a necessidade de especificar cada porta que irá utilizar.
+Para isso utilize a flag `-D <porta_local_de_proxy>` no comando SSH.
+```bash
+$ ssh -D <porta_local_de_proxy> -p13508 <user>@chococino.naquadah.com.br
+```
+Pronto, agora você tem um Proxy Socks rodando na sua máquina local na porta `<porta_local_de_proxy>`.
+Há diversas formas de redirecionar conexões para o proxy, seja no escopo do navegador, local e de sistema.
+<br>
+
+### 3.1 Proxy Socks no navegador
+
+Uma das maneiras de utilizar o proxy é por meio da extensão de navegador [FoxyProxy](https://addons.mozilla.org/pt-BR/firefox/addon/foxyproxy-standard/).
+Após baixar a extensão, entre em sua página e adicione um novo proxy na opção "Add"
+e preencha os dados do proxy: `Proxy Type: SOCKS5`, `Proxy IP: localhost` e `Port: <porta_local_de_proxy>`, como mostra na figura abaixo.
+
+<img src="assets/foxyproxy_add.png" width="300"></img>
+
+Após isso, inicie a conexão SSH com a flag `-D` e ative o proxy na tela inicial do
+FoxyProxy
+
+<img src="assets/foxyproxy_enable.png" width="300"></img>
+
+Pronto, agora toda a conexão do navegor está sendo redirecionada para o cluster chococino.
+Assim, é possível acessar as aplicações web pelo navegador. Por exemplo:
+`http://chococino:8088`, `http://chococino:9870` e `http://chococino:9090`.
