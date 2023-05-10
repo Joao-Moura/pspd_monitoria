@@ -1,0 +1,20 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+import re
+import sys
+import socket
+from jupyterlab.labapp import main
+if __name__ == '__main__':
+    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    if "password" not in sys.argv:
+        argv = " ".join(sys.argv)
+        if "--collaborative" not in argv:
+            sys.argv.append("--collaborative")
+        if "--ip" not in argv:
+            sys.argv.append("--ip")
+            sys.argv.append(socket.gethostname())
+        if "--app-dir" not in argv:
+            sys.argv.append("--app-dir=/home/prof/hadoop/python/jupyterlab-app-dev")
+
+    sys.exit(main())
+
