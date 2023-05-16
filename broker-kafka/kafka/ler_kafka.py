@@ -13,7 +13,7 @@ def desenha_cloud(palavras, consumer):
 
 
 consumer = KafkaConsumer(
-    'teste', bootstrap_servers='localhost:9092',
+    'teste_kafka_pspd', bootstrap_servers='localhost:9092',
     value_deserializer=lambda b: b.decode('utf-8').split()
 )
 
